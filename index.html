@@ -29,11 +29,11 @@
     varying vec2 v_texCoord;
 
     void main() {
-      // I pizelStep is more precise if it's calculated within
+      // I guess pizelStep is more precise if it's calculated within
       // the shader, rather than passed as uniform-value
       vec2 srcPixelStep = vec2(1) / u_srcResolution;
 
-      // Move everything exactly 30px right:
+      // Move everything exactly 30px left and up:
       vec2 target = v_texCoord + (vec2(30) * srcPixelStep);
 
       gl_FragColor = texture2D(u_image, target);
