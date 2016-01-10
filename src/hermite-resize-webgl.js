@@ -4,7 +4,6 @@ function GLScale() {
   }
 
   // Precompiling, kernel initialization, etc...
-
   // For now do it in the actual scale method.
 
   return this.scale.bind(this);
@@ -65,7 +64,7 @@ GLScale.prototype.scale = function (options, cb) {
 
     // lookup uniforms and set the resolution
     var resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
-    this.gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+    this.gl.uniform2f(resolutionLocation, this.canvas.width, this.canvas.height);
 
     // Create a buffer for the position of the rectangle corners.
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
@@ -79,7 +78,7 @@ GLScale.prototype.scale = function (options, cb) {
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
 
     // Not completely recommended, but can't find another way right now to know when it's finished.
-    // http://codeflow.org/entries/2013/feb/22/how-to-write-portable-webgl/
+    // http://codeflow.org/entries/2013/feb/22/how-to-write-portable-webgl/#performance-differences
     this.gl.finish();
 
     cb(this.canvas);
