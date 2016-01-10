@@ -1,0 +1,30 @@
+{
+  "name": "hermite-resize-webgl",
+  "description": "The hermite-resize algorithm implemented in webgl.",
+  "main": "index.js",
+  "authors": [
+    "Joram Ruitenschild"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "hermite-resize",
+    "hermite",
+    "resize",
+    "webgl",
+    "GPU",
+    "vertex-shader"
+  ],
+  "moduleType": [],
+  "homepage": "https://github.com/JrSchild/hermite-resize-webgl",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blueimp-canvas-to-blob": "~3.1.0"
+  }
+}
