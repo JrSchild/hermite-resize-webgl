@@ -39,13 +39,13 @@ GLScale.prototype.scale = function (options, cb) {
     var texCoordBuffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, texCoordBuffer);
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
-        0.0,  0.0,
-        1.0,  0.0,
-        0.0,  1.0,
-        0.0,  1.0,
-        1.0,  0.0,
-        1.0,  1.0
-      ]), this.gl.STATIC_DRAW);
+      0.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  1.0
+    ]), this.gl.STATIC_DRAW);
     this.gl.enableVertexAttribArray(texCoordLocation);
     this.gl.vertexAttribPointer(texCoordLocation, 2, this.gl.FLOAT, false, 0, 0);
 
@@ -93,12 +93,13 @@ GLScale.prototype.setRectangle = function (x, y, width, height) {
   var y1 = y;
   var y2 = y + height;
   this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
-     x1, y1,
-     x2, y1,
-     x1, y2,
-     x1, y2,
-     x2, y1,
-     x2, y2]), this.gl.STATIC_DRAW);
+    x1, y1,
+    x2, y1,
+    x1, y2,
+    x1, y2,
+    x2, y1,
+    x2, y2
+  ]), this.gl.STATIC_DRAW);
 };
 
 GLScale.prototype.loadImage = function (url, cb) {
