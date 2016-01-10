@@ -44,22 +44,60 @@
       float weight = 0.0;
       float weights = 0.0;
       float weights_alpha = 0.0;
-      float gx_r = 0.0;
+      float gx_r = 0.0; // TODO: vec3 gx_rgba = vec3(0.0);
       float gx_g = 0.0;
       float gx_b = 0.0;
       float gx_a = 0.0;
       float center_y = (loc.y + 0.5) * ratio.y;
 
       // Due to restrictions in for-loop we have to use annoying work around.
+      // NOTE: Might need to use floats for precision.
       // http://www.atmind.nl/?p=623
       int yy = int(floor(loc.y * ratio.y));
       int yy_length = int((loc.y + 1.0) * ratio.y);
-      for (int yyy = 0; yyy < 1000; yyy++) {
+      for (int yyy = 0; yyy < 5000; yyy++) {
         if (yy >= yy_length) { break; }
 
         float dy = abs(center_y - (float(yy) + 0.5)) / ratioHalf.y;
         float center_x = (loc.x + 0.5) * ratio.x;
         float w0 = dy*dy;
+
+        int xx = int(floor(loc.x * ratio.x));
+        int xx_length = int((loc.x + 1.0) * ratio.x);
+        for (int xxx = 0; xxx < 5000; xxx++) {
+          if (xx >= xx_length) { break; }
+
+          // TODO: Rewrite image-buffer index to location-vector-based calculations.
+          // Probably faster as well.
+          float dx = abs(center_x - (float(xx) + 0.5)) / ratioHalf.x;
+          float w = sqrt(w0 + dx*dx);
+
+          if (w >= -1.0 && w <= 1.0) {
+            // Hermite filter
+            weight = 2.0 * w*w*w - 3.0*w*w + 1.0;
+            if (weight > 0.0) {
+              vec2 xxyy = vec2(xx, yy) * u_resolution;
+              vec4 pixel = texture2D(u_image, xxyy);
+
+              // Alpha
+              gx_a += weight * (pixel.a * 255.0); // Convert alpha to 8 bit system.
+              weights_alpha += weight;
+
+              if (pixel.a < 1.0) {
+                weight = weight * (pixel.a * 255.0) / 250.0;
+              }
+              // TODO: Convert to vector.
+              gx_r += weight * pixel.r;
+              gx_g += weight * pixel.g;
+              gx_b += weight * pixel.b;
+              weights += weight;
+            }
+          }
+
+          xx++;
+        }
+        
+        yy++;
       }
 
       // Move everything exactly 30px left and up:
