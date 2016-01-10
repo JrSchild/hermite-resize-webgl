@@ -9,7 +9,6 @@
     attribute vec2 a_position;
     attribute vec2 a_texCoord;
     uniform vec2 u_resolution;
-    uniform vec2 u_srcResolution;
     varying vec2 v_texCoord;
 
     void main() {
@@ -23,19 +22,20 @@
 
   <!-- fragment shader -->
   <script id="2d-fragment-shader" type="x-shader/x-fragment">
-    precision mediump float;
+    precision highp float;
 
-    // Calculate pixelXStep
-    // Calculate pixelYStep
-
-    // our texture
     uniform sampler2D u_image;
-
-    // the texCoords passed in from the vertex shader.
+    uniform vec2 u_srcResolution;
     varying vec2 v_texCoord;
 
     void main() {
-      vec2 target = v_texCoord;
+      // I pizelStep is more precise if it's calculated within
+      // the shader, rather than passed as uniform-value
+      vec2 srcPixelStep = vec2(1) / u_srcResolution;
+
+      // Move everything exactly 30px right:
+      vec2 target = v_texCoord + (vec2(30) * srcPixelStep);
+
       gl_FragColor = texture2D(u_image, target);
     }
   </script>
@@ -48,7 +48,7 @@
     function downloadLink(canvas) {
       canvas.toBlob(function (bb) {
         var a = document.createElement('a');
-        a.download = 'hamster-cropped.jpg';
+        a.download = 'hamster-cropped.png';
         a.href = window.URL.createObjectURL(bb);
         a.textContent = 'Click here for download';
         document.body.appendChild(a);

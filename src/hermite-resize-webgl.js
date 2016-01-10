@@ -66,6 +66,9 @@ GLScale.prototype.scale = function (options, cb) {
     var resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
     this.gl.uniform2f(resolutionLocation, this.canvas.width, this.canvas.height);
 
+    var srcResolutionLocation = this.gl.getUniformLocation(this.program, 'u_srcResolution');
+    this.gl.uniform2f(srcResolutionLocation, image.width, image.height);
+
     // Create a buffer for the position of the rectangle corners.
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
     this.gl.enableVertexAttribArray(positionLocation);
