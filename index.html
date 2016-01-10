@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>WebGL - 2D Image</title>
 <script src="/src/webgl-utils.js"></script>
+
 <!-- vertex shader -->
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
@@ -13,15 +14,14 @@ uniform vec2 u_srcResolution;
 varying vec2 v_texCoord;
 
 void main() {
-  vec2 zeroToOne = a_position / u_resolution;
-
-  vec2 clipSpace = (zeroToOne * 2.0) - 1.0;
+  vec2 clipSpace = (a_position / u_resolution * 2.0) - 1.0;
 
   gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
   v_texCoord = a_texCoord;
 }
 </script>
+
 <!-- fragment shader -->
 <script id="2d-fragment-shader" type="x-shader/x-fragment">
 precision mediump float;
@@ -87,12 +87,6 @@ function render(image, data) {
       0.0,  1.0,
       1.0,  0.0,
       1.0,  1.0
-      // -1.0,  -1.0,
-      // 1.0,  -1.0,
-      // -1.0,  1.0,
-      // -1.0,  1.0,
-      // 1.0,  -1.0,
-      // 1.0,  1.0
     ]), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(texCoordLocation);
   gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
@@ -115,8 +109,7 @@ function render(image, data) {
   gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
 
   // Create a buffer for the position of the rectangle corners.
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
@@ -125,10 +118,6 @@ function render(image, data) {
 
   // Draw the rectangle.
   gl.drawArrays(gl.TRIANGLES, 0, 6);
-}
-
-function randomInt(range) {
-  return Math.floor(Math.random() * range);
 }
 
 function setRectangle(gl, x, y, width, height) {
