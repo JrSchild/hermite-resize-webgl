@@ -25,13 +25,42 @@
     precision highp float;
 
     uniform sampler2D u_image;
-    uniform vec2 u_srcResolution;
+    uniform vec2 u_resolution; // W2 (width), H2 (height)
+    uniform vec2 u_srcResolution; // W (width), H (height)
     varying vec2 v_texCoord;
 
     void main() {
       // I guess pizelStep is more precise if it's calculated within
-      // the shader, rather than passed as uniform-value
+      // the shader, rather than passed as uniform-value. Also these
+      // should be defined in one place.
       vec2 srcPixelStep = vec2(1) / u_srcResolution;
+      vec2 ratio = u_srcResolution / u_resolution;
+      vec2 ratioHalf = ceil(ratio / vec2(2));
+
+      // Location in pixels on target canvas.
+      vec2 loc = v_texCoord * u_resolution; // j (height), i (width)
+
+      float x2 = (loc.x + loc.y * u_resolution.x) * 4.0;
+      float weight = 0.0;
+      float weights = 0.0;
+      float weights_alpha = 0.0;
+      float gx_r = 0.0;
+      float gx_g = 0.0;
+      float gx_b = 0.0;
+      float gx_a = 0.0;
+      float center_y = (loc.y + 0.5) * ratio.y;
+
+      // Due to restrictions in for-loop we have to use annoying work around.
+      // http://www.atmind.nl/?p=623
+      int yy = int(floor(loc.y * ratio.y));
+      int yy_length = int((loc.y + 1.0) * ratio.y);
+      for (int yyy = 0; yyy < 1000; yyy++) {
+        if (yy >= yy_length) { break; }
+
+        float dy = abs(center_y - (float(yy) + 0.5)) / ratioHalf.y;
+        float center_x = (loc.x + 0.5) * ratio.x;
+        float w0 = dy*dy;
+      }
 
       // Move everything exactly 30px left and up:
       vec2 target = v_texCoord + (vec2(30) * srcPixelStep);
