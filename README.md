@@ -13,3 +13,18 @@ Tests/utilities
 Place a texture as precise as possible.
 Retrieve the exact color code of texture coordinate in pixels, not (-1, -1) (1, 1). Run unit tests for this to check if devices support precision.
 Current fragment-coordinate to pixel-coordinate
+
+### Design
+```
+// Per current design the cropper needs to be instantiated
+// to do all the precompiling and kernel initialization.
+var glScale = GLScale(options);
+
+glScale({
+  image: '/image.jpg',
+  width: 200,
+  height: 100
+}).canvas((canvas) => {
+}).blob(function(blob) {
+});
+```

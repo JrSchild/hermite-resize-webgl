@@ -1,156 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>WebGL - 2D Image</title>
-<script src="/src/webgl-utils.js"></script>
+  <meta charset="utf-8">
+  <title>WebGL - 2D Image</title>
 
-<!-- vertex shader -->
-<script id="2d-vertex-shader" type="x-shader/x-vertex">
-attribute vec2 a_position;
-attribute vec2 a_texCoord;
-uniform vec2 u_resolution;
-uniform vec2 u_srcResolution;
-varying vec2 v_texCoord;
+  <!-- vertex shader -->
+  <script id="2d-vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+    uniform vec2 u_resolution;
+    uniform vec2 u_srcResolution;
+    varying vec2 v_texCoord;
 
-void main() {
-  vec2 clipSpace = (a_position / u_resolution * 2.0) - 1.0;
+    void main() {
+      vec2 clipSpace = (a_position / u_resolution * 2.0) - 1.0;
 
-  gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+      gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
-  v_texCoord = a_texCoord;
-}
-</script>
+      v_texCoord = a_texCoord;
+    }
+  </script>
 
-<!-- fragment shader -->
-<script id="2d-fragment-shader" type="x-shader/x-fragment">
-precision mediump float;
+  <!-- fragment shader -->
+  <script id="2d-fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
 
-// Calculate pixelXStep
-// Calculate pixelYStep
+    // Calculate pixelXStep
+    // Calculate pixelYStep
 
-// our texture
-uniform sampler2D u_image;
+    // our texture
+    uniform sampler2D u_image;
 
-// the texCoords passed in from the vertex shader.
-varying vec2 v_texCoord;
+    // the texCoords passed in from the vertex shader.
+    varying vec2 v_texCoord;
 
-void main() {
-  vec2 target = v_texCoord;
-  gl_FragColor = texture2D(u_image, target);
-}
-</script>
-<script>
-"use strict";
-
-window.onload = main;
-
-function main() {
-  var image = new Image();
-  image.src = '/hamster.jpg';
-  image.onload = function() {
-
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-    var img = document.getElementById('myimg');
-    context.drawImage(image, 0, 0);
-    var data = context.getImageData(0, 0, image.width, image.height);
-    console.log(data);
-
-    render(image, data);
-  }
-}
-
-function render(image, data) {
-  // Get A WebGL context
-  var canvas = document.getElementById('canvas');
-  var gl = getWebGLContext(canvas, {preserveDrawingBuffer: true});
-  if (!gl) {
-    return;
-  }
-
-  // setup GLSL program
-  var program = createProgramFromScripts(gl, ['2d-vertex-shader', '2d-fragment-shader']);
-  gl.useProgram(program);
-
-  // look up where the vertex data needs to go.
-  var positionLocation = gl.getAttribLocation(program, 'a_position');
-  var texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
-
-  // provide texture coordinates for the rectangle.
-  var texCoordBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-      0.0,  0.0,
-      1.0,  0.0,
-      0.0,  1.0,
-      0.0,  1.0,
-      1.0,  0.0,
-      1.0,  1.0
-    ]), gl.STATIC_DRAW);
-  gl.enableVertexAttribArray(texCoordLocation);
-  gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
-
-  // Create a texture.
-  gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-
-  // Set the parameters so we can render any size image.
-  // If this stuff is not supported, draw the image to a canvas with POT dimensions.
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-  // Upload the image into the texture.
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
-  // lookup uniforms and set the resolution
-  var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
-  gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-
-  // Create a buffer for the position of the rectangle corners.
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-  gl.enableVertexAttribArray(positionLocation);
-  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-  // Set a rectangle the same size as the image.
-  setRectangle(gl, 0, 0, image.width, image.height);
-
-  // Draw the rectangle.
-  gl.drawArrays(gl.TRIANGLES, 0, 6);
-}
-
-function setRectangle(gl, x, y, width, height) {
-  var x1 = x;
-  var x2 = x + width;
-  var y1 = y;
-  var y2 = y + height;
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-     x1, y1,
-     x2, y1,
-     x1, y2,
-     x1, y2,
-     x2, y1,
-     x2, y2]), gl.STATIC_DRAW);
-}
-
-</script>
+    void main() {
+      vec2 target = v_texCoord;
+      gl_FragColor = texture2D(u_image, target);
+    }
+  </script>
 </head>
 <body>
-<canvas id="canvas" width="400" height="300"></canvas>
-</body>
-<script src="/bower/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
-<script>
-  setTimeout(function () {
-    var canvas = document.getElementById('canvas');
+  <script src="/bower/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+  <script src="/src/webgl-utils.js"></script>
+  <script src="/src/hermite-resize-webgl.js"></script>
+  <script>
+    function downloadLink(canvas) {
+      canvas.toBlob(function (bb) {
+        var a = document.createElement('a');
+        a.download = 'hamster-cropped.jpg';
+        a.href = window.URL.createObjectURL(bb);
+        a.textContent = 'Click here for download';
+        document.body.appendChild(a);
+      });
+    }
+  </script>
+  <script>
+    var glScale = GLScale();
 
-    canvas.toBlob(function (bb) {
-      var a = document.createElement('a');
-      a.download = 'hamster-cropped.jpg';
-      a.href = window.URL.createObjectURL(bb);
-      a.textContent = 'Click here for download';
-      document.body.appendChild(a);
+    glScale({
+      image: '/hamster.jpg',
+      width: 400,
+      height: 300
+    }, function (canvas) {
+      document.body.appendChild(canvas);
+      downloadLink(canvas);
     });
-  }, 500);
-</script>
+  </script>
+</body>
 </html>
