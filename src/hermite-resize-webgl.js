@@ -93,7 +93,7 @@ GLScale.prototype.scale = function (image, cb) {
   // Enhance the canvas object with toBlob polyfill, if it doesn't exist.
   this.canvas.toBlob = GLScale.toBlob;
 
-  cb(this.canvas);
+  cb && cb(this.canvas);
 
   return this;
 };
