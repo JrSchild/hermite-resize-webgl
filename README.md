@@ -1,7 +1,8 @@
 ## Hermite resize in webgl
-A highly experimental project with the [hermite image-resize](https://github.com/viliusle/Hermite-resize) algorithm implemented in WebGL.
+A highly experimental project with the [hermite image-resize](https://github.com/viliusle/Hermite-resize) algorithm implemented in WebGL. Due to mediocre performance and quality of canvas/resizing and javascript-based resize algorithms I implemented the hermite algorithm in WebGL.
 
 #### API
+For now, make sure to include `hermite-resize-webgl.js` and `webgl-utils.js`. Also copy the vertex and fragment shaders to your HTML. These steps will be smoothed out in the future.
 ```
 var glScale = GLScale(options);
 
@@ -16,7 +17,6 @@ glScale({
 
 #### Testing
 `git clone` the project. Run `npm install && bower install`. Use `node index.js` to start a static file server.
-
 
 #### TODO
 - Alpha channel support
