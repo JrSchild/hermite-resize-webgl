@@ -40,3 +40,4 @@ After pre-compiling and loading the image, GLScale is up 890% faster than the ja
 - Inline the shaders
 - ~~Make loadImage static~~
 - ~~Precompiling shaders/program~~
+- Support higher textures than in webgl max possible. Needs rewrite of pixelsToTexture function and scale method to split input up in multiple canvasses.
