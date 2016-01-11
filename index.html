@@ -38,10 +38,9 @@
     }
 
     void main() {
-      // I guess pizelStep is more precise if it's calculated within
+      // I guess ratio and ratioHalf are more precise when calculated within
       // the shader, rather than passed as uniform-value. Also these
       // should be defined in one place.
-      vec2 srcPixelStep = 1.0 / u_srcResolution;
       vec2 ratio = u_srcResolution / u_resolution;
       vec2 ratioHalf = ceil(ratio / 2.0);
 
@@ -119,7 +118,7 @@
         var a = document.createElement('a');
         a.download = 'hamster-cropped.png';
         a.href = window.URL.createObjectURL(bb);
-        a.textContent = 'Click here for download';
+        a.textContent = 'Click here to download';
         document.body.appendChild(a);
       });
     }
