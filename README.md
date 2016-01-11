@@ -1,7 +1,7 @@
 ### Hermite resize in webgl
 A highly experimental project with the hermite image-resize algorithm implemented in WebGL.
 
-### API
+##### API
 ```
 var glScale = GLScale(options);
 
@@ -14,7 +14,11 @@ glScale({
 });
 ```
 
-TODO:
+##### Testing
+`git clone` the project. Run `npm install && bower install`. Use `node index.js` to start a static file server.
+
+
+##### TODO
 - Alpha channel support
 - Better unit testing (Node.js support)
 - Add toBlob polyfill
