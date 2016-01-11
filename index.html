@@ -122,13 +122,12 @@
     }
   </script>
   <script>
-    var glScale = GLScale();
-
-    glScale({
-      image: '/hamster.jpg',
+    var glScale = GLScale({
       width: 400,
       height: 300
-    }, function (canvas) {
+    });
+
+    glScale('/hamster.jpg', function (canvas) {
       document.body.appendChild(canvas);
       downloadLink(canvas);
     });
