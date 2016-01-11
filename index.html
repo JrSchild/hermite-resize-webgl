@@ -111,17 +111,6 @@
   <script src="/src/webgl-utils.js"></script>
   <script src="/src/hermite-resize-webgl.js"></script>
   <script>
-    function downloadLink(canvas) {
-      canvas.toBlob(function (bb) {
-        var a = document.createElement('a');
-        a.download = 'hamster-cropped.png';
-        a.href = window.URL.createObjectURL(bb);
-        a.textContent = 'Click here to download';
-        document.body.appendChild(a);
-      });
-    }
-  </script>
-  <script>
     var glScale = GLScale({
       width: 400,
       height: 300
@@ -129,7 +118,6 @@
 
     glScale('/test/img/hamster.jpg', function (canvas) {
       document.body.appendChild(canvas);
-      downloadLink(canvas);
     });
   </script>
 </body>
