@@ -38,7 +38,7 @@
       vec2 ratioHalf = ceil(ratio / vec2(2));
 
       // Location in pixels on target canvas.
-      vec2 loc = v_texCoord * u_resolution; // j (height), i (width)
+      vec2 loc = floor(v_texCoord * u_resolution + vec2(0.5)); // j (height), i (width)
 
       float x2 = (loc.x + loc.y * u_resolution.x) * 4.0;
       float weight = 0.0;
@@ -50,11 +50,10 @@
       float gx_a = 0.0;
       float center_y = (loc.y + 0.5) * ratio.y;
 
-      // Due to restrictions in for-loop we have to use annoying work around.
-      // NOTE: Might need to use floats for precision.
+      // Due to restrictions in for-loop we have to use awkward work-around.
       // http://www.atmind.nl/?p=623
-      int yy = int(floor(loc.y * ratio.y));
-      int yy_length = int((loc.y + 1.0) * ratio.y);
+      float yy = floor(loc.y * ratio.y);
+      float yy_length = (loc.y + 1.0) * ratio.y;
       for (int yyy = 0; yyy < 5000; yyy++) {
         if (yy >= yy_length) { break; }
 
@@ -62,13 +61,12 @@
         float center_x = (loc.x + 0.5) * ratio.x;
         float w0 = dy*dy;
 
-        int xx = int(floor(loc.x * ratio.x));
-        int xx_length = int((loc.x + 1.0) * ratio.x);
+        float xx = floor(loc.x * ratio.x);
+        float xx_length = (loc.x + 1.0) * ratio.x;
         for (int xxx = 0; xxx < 5000; xxx++) {
           if (xx >= xx_length) { break; }
 
-          // TODO: Rewrite image-buffer index to location-vector-based calculations.
-          // Probably faster as well.
+          // TODO: Rewrite image-buffer index to location-vector/percentage-based calculations.
           float dx = abs(center_x - (float(xx) + 0.5)) / ratioHalf.x;
           float w = sqrt(w0 + dx*dx);
 
@@ -77,16 +75,16 @@
             weight = 2.0 * w*w*w - 3.0*w*w + 1.0;
             if (weight > 0.0) {
               vec2 xxyy = vec2(xx, yy) * u_resolution;
-              vec4 pixel = texture2D(u_image, xxyy);
+              vec4 pixel = texture2D(u_image, xxyy) * vec4(255.0);
 
               // Alpha
-              gx_a += weight * (pixel.a * 255.0); // Convert alpha to 8 bit system.
+              gx_a += weight * pixel.a; // Convert alpha to 8 bit system.
               weights_alpha += weight;
 
-              if (pixel.a < 1.0) {
-                weight = weight * (pixel.a * 255.0) / 250.0;
+              if (pixel.a < 255.0) {
+                weight = weight * pixel.a / 250.0;
               }
-              // TODO: Convert to vector.
+              // TODO: Use to vector.
               gx_r += weight * pixel.r;
               gx_g += weight * pixel.g;
               gx_b += weight * pixel.b;
@@ -104,6 +102,9 @@
       vec2 target = v_texCoord + (vec2(30) * srcPixelStep);
 
       gl_FragColor = texture2D(u_image, target);
+
+      // gl_FragColor = vec4(loc.x / 255.0, loc.y / 255.0, 0.6, 1.0);
+      // gl_FragColor = vec4((gx_r / weights) / 255.0,(gx_g / weights) / 255.0,(gx_b / weights) / 255.0,gx_a / 255.0);
     }
   </script>
 </head>
