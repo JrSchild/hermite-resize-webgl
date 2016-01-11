@@ -63,7 +63,7 @@
       for (int yyy = 0; yyy < 5000; yyy++) {
         if (yy >= yy_length) { break; }
 
-        float dy = abs(center_y - (float(yy) + 0.5)) / ratioHalf.y;
+        float dy = abs(center_y - (yy + 0.5)) / ratioHalf.y;
         float center_x = (loc.x + 0.5) * ratio.x;
         float w0 = dy*dy;
 
@@ -73,7 +73,7 @@
           if (xx >= xx_length) { break; }
 
           // TODO: Rewrite image-buffer index to location-vector/percentage-based calculations.
-          float dx = abs(center_x - (float(xx) + 0.5)) / ratioHalf.x;
+          float dx = abs(center_x - (xx + 0.5)) / ratioHalf.x;
           float w = sqrt(w0 + dx*dx);
 
           if (w >= -1.0 && w <= 1.0) {
