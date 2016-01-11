@@ -32,7 +32,7 @@
     // Convert a location on the texture in pixels, to the location in coordinates
     vec4 pixelsToTexture(vec2 loc) {
       vec2 target = loc / u_srcResolution;
-      target.y = 1.0 - target.y - ((u_srcResolution.y - u_resolution.y) / u_srcResolution.y);
+      target.y = 1.0 - target.y;
 
       return texture2D(u_image, target);
     }
@@ -52,9 +52,7 @@
       float weight = 0.0;
       float weights = 0.0;
       float weights_alpha = 0.0;
-      float gx_r = 0.0; // TODO: vec3 gx_rgba = vec3(0.0);
-      float gx_g = 0.0;
-      float gx_b = 0.0;
+      vec3 gx_rgb = vec3(0.0);
       float gx_a = 0.0;
       float center_y = (loc.y + 0.5) * ratio.y;
 
@@ -91,10 +89,8 @@
               if (pixel.a < 255.0) {
                 weight = weight * pixel.a / 250.0;
               }
-              // TODO: Use to vector.
-              gx_r += weight * pixel.r;
-              gx_g += weight * pixel.g;
-              gx_b += weight * pixel.b;
+
+              gx_rgb += weight * pixel.rgb;
               weights += weight;
             }
           }
@@ -105,8 +101,12 @@
         yy++;
       }
 
+      gx_rgb = (gx_rgb / weights) / 255.0;
+      gx_a /= 255.0;
+      gx_a = 1.0; // Disable alpha channels for now.
+
       // gl_FragColor = vec4(loc.x / u_resolution.x, loc.y / u_resolution.y, 0.6, 1.0);
-      gl_FragColor = vec4((gx_r / weights) / 255.0, (gx_g / weights) / 255.0, (gx_b / weights) / 255.0, /*gx_a / 255.0*/ 1.0);
+      gl_FragColor = vec4(gx_rgb, gx_a);
 
       // gl_FragColor = pixelsToTexture(loc);
       // gl_FragColor = pixelsToTexture(vec2(255.0, 144.0));
