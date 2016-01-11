@@ -24,7 +24,7 @@
     "url": "https://github.com/JrSchild/hermite-resize-webgl/issues"
   },
   "homepage": "https://github.com/JrSchild/hermite-resize-webgl#readme",
-  "dependencies": {
+  "devDependencies": {
     "express": "^4.13.3"
   }
 }
