@@ -11,7 +11,10 @@ glScale({
   width: 200,
   height: 100
 }, function(canvas) {
-  
+  // canvas is enhanced with toBlob polyfill if not present.
+  canvas.toBlob(function(blob) {
+
+  });
 });
 ```
 
@@ -20,8 +23,8 @@ glScale({
 
 #### TODO
 - ~~Alpha channel support~~
-- Better unit testing (Node.js support)
-- Add toBlob polyfill
+- Unit testing (+Node.js)
+- ~~Include toBlob polyfill~~
 - Research and implement other resize algorithms
 - Benchmark
 - API: Only supply width or height

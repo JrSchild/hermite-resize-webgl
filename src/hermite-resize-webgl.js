@@ -84,6 +84,9 @@ GLScale.prototype.scale = function (options, cb) {
     // http://codeflow.org/entries/2013/feb/22/how-to-write-portable-webgl/#performance-differences
     this.gl.finish();
 
+    // Enhance the canvas object with toBlob polyfill, if it doesn't exist.
+    this.canvas.toBlob = GLScale.toBlob;
+
     cb(this.canvas);
   });
 
@@ -111,3 +114,27 @@ GLScale.prototype.loadImage = function (url, cb) {
   image.onerror = cb.bind(this, null);
   image.src = url;
 };
+
+/**
+ * canvas.prototype.toBlob polyfill.
+ * Does not change the prototype chain.
+ */
+GLScale.toBlob = (function toBlob() {
+  var CanvasPrototype = window.HTMLCanvasElement.prototype;
+
+  if (CanvasPrototype.toBlob) {
+    return CanvasPrototype.toBlob;
+  }
+
+  return function(callback, type, quality) {
+    var binStr = atob(this.toDataURL(type, quality).split(',')[1]);
+    var len = binStr.length;
+    var arr = new Uint8Array(len);
+
+    for (var i = 0; i < len; i++) {
+      arr[i] = binStr.charCodeAt(i);
+    }
+
+    callback( new Blob( [arr], {type: type || 'image/png'} ) );
+  };
+})();
