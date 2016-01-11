@@ -19,6 +19,11 @@ glScale('/image.jpg', function(canvas) {
 });
 ```
 
+#### Performance
+After pre-compiling and loading the image, GLScale is up 890% faster than the javascript version. (Tested on a Macbook Pro Retina 2012)
+
+![Performance Chart](/doc/img/performance.png)
+
 #### Testing
 `git clone` the project. Run `npm install && bower install`. Use `node index.js` to start a static file server.
 
@@ -28,7 +33,7 @@ glScale('/image.jpg', function(canvas) {
 - ~~Include toBlob polyfill~~
 - ~~Support other input (image-, canvas-element)~~
 - Research and implement other resize algorithms
-- Benchmark
+- ~~Benchmark~~
 - API: Only supply width or height
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
 - Remove webgl-utils dependecy
