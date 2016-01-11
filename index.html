@@ -33,12 +33,12 @@
       // I guess pizelStep is more precise if it's calculated within
       // the shader, rather than passed as uniform-value. Also these
       // should be defined in one place.
-      vec2 srcPixelStep = vec2(1) / u_srcResolution;
+      vec2 srcPixelStep = 1.0 / u_srcResolution;
       vec2 ratio = u_srcResolution / u_resolution;
-      vec2 ratioHalf = ceil(ratio / vec2(2));
+      vec2 ratioHalf = ceil(ratio / 2.0);
 
       // Location in pixels on target canvas.
-      vec2 loc = floor(v_texCoord * u_resolution + vec2(0.5)); // j (height), i (width)
+      vec2 loc = floor(v_texCoord * u_resolution + 0.5); // j (height), i (width)
 
       float x2 = (loc.x + loc.y * u_resolution.x) * 4.0;
       float weight = 0.0;
@@ -75,7 +75,7 @@
             weight = 2.0 * w*w*w - 3.0*w*w + 1.0;
             if (weight > 0.0) {
               vec2 xxyy = vec2(xx, yy) * u_resolution;
-              vec4 pixel = texture2D(u_image, xxyy) * vec4(255.0);
+              vec4 pixel = texture2D(u_image, xxyy) * 255.0;
 
               // Alpha
               gx_a += weight * pixel.a; // Convert alpha to 8 bit system.
@@ -99,7 +99,7 @@
       }
 
       // Move everything exactly 30px left and up:
-      vec2 target = v_texCoord + (vec2(30) * srcPixelStep);
+      vec2 target = v_texCoord + (30.0 * srcPixelStep);
 
       gl_FragColor = texture2D(u_image, target);
 
