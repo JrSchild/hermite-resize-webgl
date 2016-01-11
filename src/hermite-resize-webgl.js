@@ -113,7 +113,11 @@ GLScale.prototype.setRectangle = function (x, y, width, height) {
   ]), this.gl.STATIC_DRAW);
 };
 
-GLScale.prototype.loadImage = function (url, cb) {
+/**
+ * Load image from url.
+ * Useful to have as static- and instance method.
+ */
+GLScale.loadImage = function (url, cb) {
   var image = new Image();
   image.onload = cb.bind(this, null, image);
   image.onerror = cb.bind(this);
@@ -121,6 +125,7 @@ GLScale.prototype.loadImage = function (url, cb) {
 
   return this;
 };
+GLScale.prototype.loadImage = GLScale.loadImage;
 
 /**
  * canvas.prototype.toBlob polyfill.
