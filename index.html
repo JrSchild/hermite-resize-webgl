@@ -101,8 +101,7 @@
       }
 
       gx_rgb = (gx_rgb / weights) / 255.0;
-      gx_a /= 255.0;
-      gx_a = 1.0; // Disable alpha channels for now.
+      gx_a = (gx_a / weights_alpha) / 255.0;
 
       gl_FragColor = vec4(gx_rgb, gx_a);
     }
