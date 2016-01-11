@@ -29,6 +29,14 @@
     uniform vec2 u_srcResolution; // W (width), H (height)
     varying vec2 v_texCoord;
 
+    // Convert a location on the texture in pixels, to the location in coordinates
+    vec4 pixelsToTexture(vec2 loc) {
+      vec2 target = loc / u_srcResolution;
+      target.y = 1.0 - target.y - ((u_srcResolution.y - u_resolution.y) / u_srcResolution.y);
+
+      return texture2D(u_image, target);
+    }
+
     void main() {
       // I guess pizelStep is more precise if it's calculated within
       // the shader, rather than passed as uniform-value. Also these
@@ -38,7 +46,7 @@
       vec2 ratioHalf = ceil(ratio / 2.0);
 
       // Location in pixels on target canvas.
-      vec2 loc = floor(v_texCoord * u_resolution + 0.5); // j (height), i (width)
+      vec2 loc = gl_FragCoord.xy; // j (height), i (width)
 
       float x2 = (loc.x + loc.y * u_resolution.x) * 4.0;
       float weight = 0.0;
@@ -74,8 +82,7 @@
             // Hermite filter
             weight = 2.0 * w*w*w - 3.0*w*w + 1.0;
             if (weight > 0.0) {
-              vec2 xxyy = vec2(xx, yy) * u_resolution;
-              vec4 pixel = texture2D(u_image, xxyy) * 255.0;
+              vec4 pixel = pixelsToTexture(vec2(xx, yy)) * 255.0;
 
               // Alpha
               gx_a += weight * pixel.a; // Convert alpha to 8 bit system.
@@ -94,17 +101,19 @@
 
           xx++;
         }
-        
+
         yy++;
       }
 
+      // gl_FragColor = vec4(loc.x / u_resolution.x, loc.y / u_resolution.y, 0.6, 1.0);
+      gl_FragColor = vec4((gx_r / weights) / 255.0, (gx_g / weights) / 255.0, (gx_b / weights) / 255.0, /*gx_a / 255.0*/ 1.0);
+
+      // gl_FragColor = pixelsToTexture(loc);
+      // gl_FragColor = pixelsToTexture(vec2(255.0, 144.0));
+
       // Move everything exactly 30px left and up:
-      vec2 target = v_texCoord + (30.0 * srcPixelStep);
-
-      gl_FragColor = texture2D(u_image, target);
-
-      // gl_FragColor = vec4(loc.x / 255.0, loc.y / 255.0, 0.6, 1.0);
-      // gl_FragColor = vec4((gx_r / weights) / 255.0,(gx_g / weights) / 255.0,(gx_b / weights) / 255.0,gx_a / 255.0);
+      // vec2 target = v_texCoord + (30.0 * srcPixelStep);
+      // gl_FragColor = texture2D(u_image, target);
     }
   </script>
 </head>
