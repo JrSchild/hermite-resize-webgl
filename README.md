@@ -1,5 +1,5 @@
 ## Hermite resize in webgl
-A highly experimental project with the hermite image-resize algorithm implemented in WebGL.
+A highly experimental project with the [hermite image-resize](https://github.com/viliusle/Hermite-resize) algorithm implemented in WebGL.
 
 #### API
 ```
@@ -28,3 +28,4 @@ glScale({
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
 - Remove webgl-utils dependecy
 - Inline the shaders
+- Precompiling shaders/program
