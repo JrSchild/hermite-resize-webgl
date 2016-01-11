@@ -20,7 +20,7 @@ glScale('/image.jpg', function(canvas) {
 ```
 
 #### Performance
-After pre-compiling and loading the image, GLScale is up 890% faster than the javascript version. (Tested on a Macbook Pro Retina 2012)
+After pre-compiling and loading the image, GLScale is up to 890% faster than the javascript version. (Tested on a Macbook Pro Retina 2012)
 
 ![Performance Chart](/doc/img/performance.png)
 
