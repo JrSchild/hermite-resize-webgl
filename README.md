@@ -28,3 +28,4 @@ glScale({
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
 - Remove webgl-utils dependecy
 - Inline the shaders
+- Precompiling shaders/program
