@@ -1,30 +1,26 @@
-lanczos3 lanczos5 lanczos8 hermite webgl-native canvas
+### Hermite resize in webgl
+A highly experimental project with the hermite image-resize algorithm implemented in WebGL.
 
-
-http://stackoverflow.com/a/8365035
-
-http://blog.codinghorror.com/better-image-resizing/
-https://github.com/mortennobel/java-image-scaling
-http://blog.nobel-joergensen.com/2008/12/20/downscaling-images-in-java/
-https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
-
-
-Tests/utilities
-Place a texture as precise as possible.
-Retrieve the exact color code of texture coordinate in pixels, not (-1, -1) (1, 1). Run unit tests for this to check if devices support precision.
-Current fragment-coordinate to pixel-coordinate
-
-### Design
+### API
 ```
-// Per current design the cropper needs to be instantiated
-// to do all the precompiling and kernel initialization.
 var glScale = GLScale(options);
 
 glScale({
   image: '/image.jpg',
   width: 200,
   height: 100
-}).canvas((canvas) => {
-}).blob(function(blob) {
+}, function(canvas) {
+  
 });
 ```
+
+TODO:
+- Alpha channel support
+- Better unit testing (Node.js support)
+- Add toBlob polyfill
+- Research and implement other resize algorithms
+- Benchmark
+- API: Only supply width or height
+- The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data. In which case the GPU will do some interpolation itself.
+- Remove webgl-utils dependecy
+- Inline shaders
