@@ -105,15 +105,7 @@
       gx_a /= 255.0;
       gx_a = 1.0; // Disable alpha channels for now.
 
-      // gl_FragColor = vec4(loc.x / u_resolution.x, loc.y / u_resolution.y, 0.6, 1.0);
       gl_FragColor = vec4(gx_rgb, gx_a);
-
-      // gl_FragColor = pixelsToTexture(loc);
-      // gl_FragColor = pixelsToTexture(vec2(255.0, 144.0));
-
-      // Move everything exactly 30px left and up:
-      // vec2 target = v_texCoord + (30.0 * srcPixelStep);
-      // gl_FragColor = texture2D(u_image, target);
     }
   </script>
 </head>
