@@ -143,7 +143,7 @@ GLScale.compileShader = function (gl, shaderSource, shaderType) {
   gl.shaderSource(shader, shaderSource);
   gl.compileShader(shader);
  
-  // When unable to compile, throw error.
+  // Throw error when unable to compile.
   if (!(gl.getShaderParameter(shader, gl.COMPILE_STATUS))) {
     throw new Error('Could not compile shader: ' + gl.getShaderInfoLog(shader));
   }
@@ -154,16 +154,16 @@ GLScale.compileShader = function (gl, shaderSource, shaderType) {
 GLScale.createProgram = function (gl, vertexShader, fragmentShader) {
   var program = gl.createProgram();
  
-  // attach the shaders.
+  // Attach the shaders.
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
  
-  // link the program.
+  // Link the program.
   gl.linkProgram(program);
  
-  // Throw error when unable to link
+  // Throw error when unable to link.
   if (!(gl.getProgramParameter(program, gl.LINK_STATUS))) {
-    throw ("program filed to link:" + gl.getProgramInfoLog (program));
+    throw new Error('Program failed to link: ' + gl.getProgramInfoLog (program));
   }
  
   return program;
