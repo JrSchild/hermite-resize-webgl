@@ -37,6 +37,7 @@ After pre-compiling and loading the image, GLScale is up to 890% faster than the
 - API: Only supply width or height
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
 - Remove webgl-utils dependecy
+- ~~Minify shaders~~
 - Inline the shaders
 - ~~Make loadImage static~~
 - ~~Precompiling shaders/program~~
