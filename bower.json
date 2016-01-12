@@ -1,5 +1,6 @@
 {
   "name": "hermite-resize-webgl",
+  "version": "0.0.0",
   "description": "The hermite-resize algorithm implemented in webgl.",
   "main": "index.js",
   "authors": [

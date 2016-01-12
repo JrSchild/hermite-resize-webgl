@@ -2,7 +2,7 @@
 A highly experimental project with the [hermite image-resize](https://github.com/viliusle/Hermite-resize) algorithm implemented in WebGL. Due to mediocre performance and quality of canvas-resizing and javascript-based resize algorithms I implemented the hermite algorithm in WebGL.
 
 #### API
-For now, make sure to include `hermite-resize-webgl.js` and `webgl-utils.js`. Also copy the vertex and fragment shaders to your HTML. These steps will be smoothed out in the future.
+Include the `dist/hermite-resize-webgl.js` file and you are good to go.
 ```
 // Pre-compile the program.
 var glScale = GLScale({
@@ -36,9 +36,9 @@ After pre-compiling and loading the image, GLScale is up to 890% faster than the
 - ~~Benchmark~~
 - API: Only supply width or height
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
-- Remove webgl-utils dependecy
+- ~~Remove webgl-utils dependecy~~
 - ~~Minify shaders~~
-- Inline the shaders
+- ~~Inline the shaders~~
 - ~~Make loadImage static~~
 - ~~Precompiling shaders/program~~
 - Support higher textures than in webgl max possible. Needs rewrite of pixelsToTexture function and scale method to split input up in multiple canvasses.
