@@ -136,7 +136,7 @@
         canvas.width = W;
         canvas.height = H;
         context.drawImage(image, 0, 0);
-        
+
         resample_hermite(canvas, W, H, options.width, options.height);
       })
       .on('cycle', function(event) {
