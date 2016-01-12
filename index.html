@@ -7,7 +7,6 @@
   <!-- vertex shader -->
   <script id="2d-vertex-shader" type="x-shader/x-vertex">
     attribute vec2 a_position;
-    attribute vec2 a_texCoord;
     uniform vec2 u_resolution;
     varying vec2 v_texCoord;
 
@@ -15,8 +14,6 @@
       vec2 clipSpace = (a_position / u_resolution * 2.0) - 1.0;
 
       gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
-
-      v_texCoord = a_texCoord;
     }
   </script>
 
@@ -27,7 +24,6 @@
     uniform sampler2D u_image;
     uniform vec2 u_resolution; // W2 (width), H2 (height)
     uniform vec2 u_srcResolution; // W (width), H (height)
-    varying vec2 v_texCoord;
 
     // Convert a location on the texture in pixels, to the location in coordinates
     vec4 pixelsToTexture(vec2 loc) {

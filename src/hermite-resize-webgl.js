@@ -3,9 +3,7 @@ function GLScale(options) {
     return new GLScale(options);
   }
 
-  this.options = options;
-
-  this.precompile();
+  this.precompile(options);
 
   return this.scale.bind(this);
 }
@@ -13,11 +11,11 @@ function GLScale(options) {
 /**
  * Precompiling, canvas/kernel initialization
  */
-GLScale.prototype.precompile = function () {
+GLScale.prototype.precompile = function (options) {
   this.canvas = document.createElement('canvas');
 
-  this.canvas.width = this.options.width;
-  this.canvas.height = this.options.height;
+  this.canvas.width = options.width;
+  this.canvas.height = options.height;
 
   var ctxOptions = {preserveDrawingBuffer: true};
   this.gl = this.canvas.getContext('webgl', ctxOptions) || this.canvas.getContext('experimental-webgl', ctxOptions);
@@ -29,21 +27,6 @@ GLScale.prototype.precompile = function () {
   // setup GLSL program
   this.program = createProgramFromScripts(this.gl, ['2d-vertex-shader', '2d-fragment-shader']);
   this.gl.useProgram(this.program);
-  var texCoordLocation = this.gl.getAttribLocation(this.program, 'a_texCoord');
-
-  // provide texture coordinates for the rectangle.
-  var texCoordBuffer = this.gl.createBuffer();
-  this.gl.bindBuffer(this.gl.ARRAY_BUFFER, texCoordBuffer);
-  this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([
-    0.0,  0.0,
-    1.0,  0.0,
-    0.0,  1.0,
-    0.0,  1.0,
-    1.0,  0.0,
-    1.0,  1.0
-  ]), this.gl.STATIC_DRAW);
-  this.gl.enableVertexAttribArray(texCoordLocation);
-  this.gl.vertexAttribPointer(texCoordLocation, 2, this.gl.FLOAT, false, 0, 0);
 
   // Create a texture.
   this.gl.bindTexture(this.gl.TEXTURE_2D, this.gl.createTexture());
