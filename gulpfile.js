@@ -48,7 +48,7 @@ function loadShaders() {
   return ['', '',
     'GLScale.Hermite = {',
     '  vertex: \'' + vertex + '\',',
-    '  fragment:  \'' + fragment + '\'',
+    '  fragment: \'' + fragment + '\'',
     '};'
   ].join('\n');
 }

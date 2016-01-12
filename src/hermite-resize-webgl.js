@@ -24,7 +24,7 @@ GLScale.prototype.precompile = function (options) {
     throw new Error('Could not initialize webgl context');
   }
 
-  // setup GLSL program
+  // Setup GLSL program
   var vertex = GLScale.compileShader(this.gl, GLScale.Hermite.vertex, this.gl.VERTEX_SHADER);
   var fragment = GLScale.compileShader(this.gl, GLScale.Hermite.fragment, this.gl.FRAGMENT_SHADER);
   this.program = GLScale.createProgram(this.gl, vertex, fragment);
