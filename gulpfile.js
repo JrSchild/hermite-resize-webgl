@@ -39,8 +39,11 @@ gulp.task('watch', function () {
   gulp.watch('src/**/*', ['default']);
 });
 
+var app;
 gulp.task('server', function () {
-  express()
+  if (app) return;
+
+  app = express()
     .use(express.static('./'))
     .listen(3000);
 });
