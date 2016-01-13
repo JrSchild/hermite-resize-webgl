@@ -7,22 +7,18 @@
 <body>
   <canvas id="cc"></canvas>
   <script src="/src/hermite-resize-js.js"></script>
+  <script src="/dist/hermite-resize-webgl.js"></script>
   <script>
-  var canvas = document.getElementById("cc");
-  var ctx = canvas.getContext("2d");
+    var canvas = document.getElementById('cc');
+    var ctx = canvas.getContext('2d');
 
-  var img = new Image();
-  img.onload = function() {
-      var W = img.width;
-      var H = img.height;
-
-      canvas.width = W;
-      canvas.height = H;
+    GLScale.loadImage('/test/img/hamster.jpg', function (err, img) {
+      canvas.width = img.width;
+      canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
-      
-      resample_hermite(canvas, W, H, 400, 300);
-  }
-  img.src = '/test/img/hamster.jpg';
+
+      resample_hermite(canvas, img.width, img.height, 400, 300);
+    });
   </script>
 </body>
 </html>
