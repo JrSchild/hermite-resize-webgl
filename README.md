@@ -25,11 +25,12 @@ After pre-compiling and loading the image, GLScale is up to 890% faster than the
 ![Performance Chart](/doc/img/performance.png)
 
 #### Testing
-`git clone` the project. Run `npm install && bower install`. Use `node index.js` to start a static file server.
+`git clone` the project. Run `npm install` and `gulp` or `gulp server` to start a static file server.
 
 #### TODO
 - ~~Alpha channel support~~
 - Unit testing (+Node.js)
+- ~~Run static file server from within `gulp` instead of from index.js (which should be for module including).~~
 - ~~Include toBlob polyfill~~
 - ~~Support other input (image-, canvas-element)~~
 - Research and implement other resize algorithms

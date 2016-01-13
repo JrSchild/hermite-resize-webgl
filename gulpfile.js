@@ -5,8 +5,9 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
 var inject = require('gulp-inject-string');
-var bower = require('./bower.json');
+var express = require('express');
 var minify = require('./lib/minify-glsl');
+var bower = require('./bower.json');
 
 var banner = [
   '/**',
@@ -34,8 +35,14 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', function () {
   gulp.watch('src/**/*', ['default']);
+});
+
+gulp.task('server', function () {
+  express()
+    .use(express.static('./'))
+    .listen(3000);
 });
 
 /**
@@ -53,4 +60,4 @@ function loadShaders() {
   ].join('\n');
 }
 
-gulp.task('default', ['lint', 'scripts', 'watch']);
+gulp.task('default', ['lint', 'scripts', 'watch', 'server']);
