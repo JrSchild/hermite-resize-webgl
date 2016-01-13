@@ -36,7 +36,7 @@ gulp.task('scripts', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('src/**/*', ['default']);
+  gulp.watch('src/**/*', ['lint', 'scripts']);
 });
 
 var app;
