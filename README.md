@@ -36,6 +36,7 @@ After pre-compiling and loading the image, GLScale is up to 890% faster than the
 - ~~Benchmark~~
 - API: Only supply width or height
 - The current implementation outputs slightly different results than the original javascript-based algorithm. Maybe this is due to precision/incorrectly reading exactly the right pixel data from the texture. In which case the GPU will do some interpolation itself.
+- Allow the canvas (+program) to resize after compilation
 - ~~Remove webgl-utils dependecy~~
 - ~~Minify shaders~~
 - ~~Inline the shaders~~
