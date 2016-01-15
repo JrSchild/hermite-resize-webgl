@@ -42,7 +42,7 @@ GLScale.prototype.precompile = function (options) {
 
   // lookup uniforms and set the resolution
   var resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
-  this.gl.uniform2f(resolutionLocation, this.canvas.width, this.canvas.height);
+  this.gl.uniform2f(resolutionLocation, options.width, options.height);
 
   // Create a buffer for the position of the rectangle corners.
   this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
