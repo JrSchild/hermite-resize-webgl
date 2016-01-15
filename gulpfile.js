@@ -39,11 +39,8 @@ gulp.task('watch', function () {
   gulp.watch('src/**/*', ['lint', 'scripts']);
 });
 
-var app;
 gulp.task('server', function () {
-  if (app) return;
-
-  app = express()
+  express()
     .use(express.static('./'))
     .listen(3000);
 });
