@@ -5,11 +5,8 @@ uniform vec2 u_resolution;
 uniform vec2 u_srcResolution;
 
 // Convert a location on the texture in pixels, to the location in coordinates
-vec4 pixelsToTexture(vec2 loc) {
-  vec2 target = loc / u_srcResolution;
-  target.y = 1.0 - target.y;
-
-  return texture2D(u_image, target);
+vec4 getTextureColor(vec2 loc) {
+  return texture2D(u_image, loc / u_srcResolution);
 }
 
 void main() {
@@ -22,7 +19,9 @@ void main() {
   // Location in pixels on target canvas.
   vec2 loc = gl_FragCoord.xy;
 
-  float x2 = (loc.x + loc.y * u_resolution.x) * 4.0;
+  // Normalize location from bottom-left to top-left.
+  loc.y = u_resolution.y - loc.y;
+
   float weight = 0.0;
   float weights = 0.0;
   float weights_alpha = 0.0;
@@ -46,7 +45,6 @@ void main() {
     for (int xxx = 0; xxx < 5000; xxx++) {
       if (xx >= xx_length) { break; }
 
-      // TODO: Rewrite image-buffer index to location-vector/percentage-based calculations.
       float dx = abs(center_x - (xx + 0.5)) / ratioHalf.x;
       float w = sqrt(w0 + dx*dx);
 
@@ -54,7 +52,7 @@ void main() {
         // Hermite filter
         weight = 2.0 * w*w*w - 3.0*w*w + 1.0;
         if (weight > 0.0) {
-          vec4 pixel = pixelsToTexture(vec2(xx, yy)) * 255.0;
+          vec4 pixel = getTextureColor(vec2(xx, yy)) * 255.0;
 
           // Alpha
           gx_a += weight * pixel.a;
